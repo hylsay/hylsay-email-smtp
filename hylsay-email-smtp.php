@@ -180,30 +180,28 @@ if ( is_admin() )
  */
 
 $hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
-$hylsay_email_smtp_server = $hylsay_email_smtp_options['hylsay_email_smtp_server'];  // 邮件服务器
-$hylsay_email_smtp_port = $hylsay_email_smtp_options['hylsay_email_smtp_port']; // 服务器端口
-$hylsay_email_smtp_sec = $hylsay_email_smtp_options['hylsay_email_smtp_sec']; // 授权方式
-$hylsay_email_smtp_username = $hylsay_email_smtp_options['hylsay_email_smtp_username']; // 邮箱账号
-$hylsay_email_smtp_passwd = $hylsay_email_smtp_options['hylsay_email_smtp_passwd']; // 邮箱密码
 
-function mail_smtp($phpmailer)
-{
-	$phpmailer->isSMTP();
-	$phpmailer->SMTPAuth = true;
-	$phpmailer->CharSet = "utf-8";
-	$phpmailer->SMTPSecure = $hylsay_email_smtp_sec;
-	$phpmailer->Port = $hylsay_email_smtp_port;
-	$phpmailer->Host = $hylsay_email_smtp_server;
-	$phpmailer->From = $hylsay_email_smtp_username;
-	$phpmailer->Username = $hylsay_email_smtp_username;
-	$phpmailer->Password = $hylsay_email_smtp_passwd;
+if (!$hylsay_email_smtp_options){
+	function mail_smtp($phpmailer)
+	{
+		$phpmailer->isSMTP();
+		$phpmailer->SMTPAuth = true;
+		$phpmailer->CharSet = "utf-8";
+		$phpmailer->SMTPSecure = $hylsay_email_smtp_options['hylsay_email_smtp_sec'];
+		$phpmailer->Port = $hylsay_email_smtp_options['hylsay_email_smtp_port'];
+		$phpmailer->Host = $hylsay_email_smtp_options['hylsay_email_smtp_server'];
+		$phpmailer->From = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
+		$phpmailer->Username = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
+		$phpmailer->Password = $hylsay_email_smtp_options['hylsay_email_smtp_passwd'];
+	}
+	add_action('phpmailer_init', 'mail_smtp');
 }
-add_action('phpmailer_init', 'mail_smtp');
+
 
 function comment_approved($comment)
 {
     if (is_email($comment->comment_author_email)) {
-        $wp_email = $hylsay_email_smtp_username;
+        $wp_email = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
         $to = trim($comment->comment_author_email);
         $post_link = get_permalink($comment->comment_post_ID);
         $subject = '[通知]您的留言已经通过审核';
@@ -254,7 +252,7 @@ function comment_notify($comment_id)
     $parent_id = $comment->comment_parent ? $comment->comment_parent : '';
     $spam_confirmed = $comment->comment_approved;
     if (($parent_id != '') && ($spam_confirmed != 'spam')) {
-        $wp_email = $hylsay_email_smtp_username;
+        $wp_email = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
         $to = trim(get_comment($parent_id)->comment_author_email);
         $subject = '[通知]您的留言有了新的回复';
         $message = '
