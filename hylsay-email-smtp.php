@@ -50,12 +50,12 @@ class HylsayEmailSMTP {
 		register_setting(
 			'hylsay_email_smtp_option_group', // option_group
 			'hylsay_email_smtp_option_name', // option_name
-			array( $this, 'email_smtp_sanitize' ) // sanitize_callback
+			array( $this, 'hylsay_email_smtp_sanitize' ) // sanitize_callback
 		);
 
 		add_settings_section(
 			'hylsay_email_smtp_setting_section', // id
-			'Settings', // title
+			'SMTP配置', // title
 			array( $this, 'hylsay_email_smtp_section_info' ), // callback
 			'hylsay-email-smtp-admin' // page
 		);
@@ -101,7 +101,7 @@ class HylsayEmailSMTP {
 		);
 	}
 
-	public function email_smtp_sanitize($input) {
+	public function hylsay_email_smtp_sanitize($input) {
 		$sanitary_values = array();
 		if ( isset( $input['hylsay_email_smtp_server'] ) ) {
 			$sanitary_values['hylsay_email_smtp_server'] = sanitize_text_field( $input['hylsay_email_smtp_server'] );
