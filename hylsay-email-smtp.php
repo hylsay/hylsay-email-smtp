@@ -171,7 +171,7 @@ class HylsayEmailSMTP {
 if ( is_admin() )
 	$email_smtp = new HylsayEmailSMTP();
 
-function mail_smtp($phpmailer)
+function hylsay_hes_mail_smtp($phpmailer)
 {
 	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
 	
@@ -185,9 +185,9 @@ function mail_smtp($phpmailer)
 	$phpmailer->Username = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
 	$phpmailer->Password = $hylsay_email_smtp_options['hylsay_email_smtp_passwd'];
 }
-add_action('phpmailer_init', 'mail_smtp');
+add_action('phpmailer_init', 'hylsay_hes_mail_smtp');
 
-function comment_approved($comment)
+function hylsay_hes_comment_approved($comment)
 {
 	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
 
@@ -235,9 +235,9 @@ function comment_approved($comment)
         wp_mail($to, $subject, $message, $headers);
     }
 }
-add_action('comment_unapproved_to_approved', 'comment_approved');
+add_action('comment_unapproved_to_approved', 'hylsay_hes_comment_approved');
 
-function comment_notify($comment_id)
+function hylsay_hes_comment_notify($comment_id)
 {
 	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
 
@@ -289,4 +289,4 @@ function comment_notify($comment_id)
         wp_mail($to, $subject, $message, $headers);
     }
 }
-add_action('comment_post', 'comment_notify');
+add_action('comment_post', 'hylsay_hes_comment_notify');
