@@ -1,8 +1,8 @@
 <?php 
 /*
 Plugin Name: Hylsay Email SMTP
-Plugin URI: https://aoaoao.info/hylsay-email-smtp
-Description: Mailbox SMTP configuration plug in
+Plugin URI: https://github.com/hylsay/hylsay-email-smtp
+Description: Send mail using SMTP
 Version: 1.0
 Author: hylsay
 Author URI: http://aoaoao.info
@@ -32,8 +32,10 @@ class HylsayEmailSMTP {
 		$this->hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' ); ?>
 
 		<div class="wrap">
-			<h2>Email-SMTP</h2>
-			<p></p>
+			<h2>Hylsay-Email-SMTP</h2>
+			<p>纯净版Wordpress邮箱插件，作者：hylsay，官方网址：<a href="https://aoaoao.info" target="_blank">https://aoaoao.info</a></p>
+			
+
 			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
@@ -132,35 +134,35 @@ class HylsayEmailSMTP {
 
 	public function hylsay_email_smtp_server_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_server]" id="hylsay_email_smtp_server" value="%s">',
+			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_server]" id="hylsay_email_smtp_server" value="%s" placeholder="填写发件服务器地址，例如：smtp.163.com">',
 			isset( $this->hylsay_email_smtp_options['hylsay_email_smtp_server'] ) ? esc_attr( $this->hylsay_email_smtp_options['hylsay_email_smtp_server']) : ''
 		);
 	}
 
 	public function hylsay_email_smtp_port_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_port]" id="hylsay_email_smtp_port" value="%s">',
+			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_port]" id="hylsay_email_smtp_port" value="%s" placeholder="填写发件服务器端口，例如：465">',
 			isset( $this->hylsay_email_smtp_options['hylsay_email_smtp_port'] ) ? esc_attr( $this->hylsay_email_smtp_options['hylsay_email_smtp_port']) : ''
 		);
 	}
 
 	public function hylsay_email_smtp_sec_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_sec]" id="hylsay_email_smtp_sec" value="%s">',
+			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_sec]" id="hylsay_email_smtp_sec" value="%s" placeholder="填写登录鉴权的方式，ssl 或 tls">',
 			isset( $this->hylsay_email_smtp_options['hylsay_email_smtp_sec'] ) ? esc_attr( $this->hylsay_email_smtp_options['hylsay_email_smtp_sec']) : ''
 		);
 	}
 
 	public function hylsay_email_smtp_username_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_username]" id="hylsay_email_smtp_username" value="%s">',
+			'<input class="regular-text" type="text" name="hylsay_email_smtp_option_name[hylsay_email_smtp_username]" id="hylsay_email_smtp_username" value="%s" placeholder="填写邮箱账号">',
 			isset( $this->hylsay_email_smtp_options['hylsay_email_smtp_username'] ) ? esc_attr( $this->hylsay_email_smtp_options['hylsay_email_smtp_username']) : ''
 		);
 	}
 
 	public function hylsay_email_smtp_passwd_callback() {
 		printf(
-			'<input class="regular-text" type="password" name="hylsay_email_smtp_option_name[hylsay_email_smtp_passwd]" id="hylsay_email_smtp_passwd" value="%s">',
+			'<input class="regular-text" type="password" name="hylsay_email_smtp_option_name[hylsay_email_smtp_passwd]" id="hylsay_email_smtp_passwd" value="%s" placeholder="填写邮箱密码">',
 			isset( $this->hylsay_email_smtp_options['hylsay_email_smtp_passwd'] ) ? esc_attr( $this->hylsay_email_smtp_options['hylsay_email_smtp_passwd']) : ''
 		);
 	}
@@ -169,37 +171,26 @@ class HylsayEmailSMTP {
 if ( is_admin() )
 	$email_smtp = new HylsayEmailSMTP();
 
-/* 
- * Retrieve this value with:
- * $hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' ); // Array of All Options
- * $hylsay_email_smtp_server = $hylsay_email_smtp_options['hylsay_email_smtp_server']; // 邮件服务器
- * $hylsay_email_smtp_port = $hylsay_email_smtp_options['hylsay_email_smtp_port']; // 服务器端口
- * $hylsay_email_smtp_sec = $hylsay_email_smtp_options['hylsay_email_smtp_sec']; // 授权方式
- * $hylsay_email_smtp_username = $hylsay_email_smtp_options['hylsay_email_smtp_username']; // 邮箱账号
- * $hylsay_email_smtp_passwd = $hylsay_email_smtp_options['hylsay_email_smtp_passwd']; // 邮箱密码
- */
-
-$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
-
-if (!$hylsay_email_smtp_options){
-	function mail_smtp($phpmailer)
-	{
-		$phpmailer->isSMTP();
-		$phpmailer->SMTPAuth = true;
-		$phpmailer->CharSet = "utf-8";
-		$phpmailer->SMTPSecure = $hylsay_email_smtp_options['hylsay_email_smtp_sec'];
-		$phpmailer->Port = $hylsay_email_smtp_options['hylsay_email_smtp_port'];
-		$phpmailer->Host = $hylsay_email_smtp_options['hylsay_email_smtp_server'];
-		$phpmailer->From = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
-		$phpmailer->Username = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
-		$phpmailer->Password = $hylsay_email_smtp_options['hylsay_email_smtp_passwd'];
-	}
-	add_action('phpmailer_init', 'mail_smtp');
+function mail_smtp($phpmailer)
+{
+	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
+	
+	$phpmailer->isSMTP();
+	$phpmailer->SMTPAuth = true;
+	$phpmailer->CharSet = "utf-8";
+	$phpmailer->SMTPSecure = $hylsay_email_smtp_options['hylsay_email_smtp_sec'];
+	$phpmailer->Port = $hylsay_email_smtp_options['hylsay_email_smtp_port'];
+	$phpmailer->Host = $hylsay_email_smtp_options['hylsay_email_smtp_server'];
+	$phpmailer->From = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
+	$phpmailer->Username = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
+	$phpmailer->Password = $hylsay_email_smtp_options['hylsay_email_smtp_passwd'];
 }
-
+add_action('phpmailer_init', 'mail_smtp');
 
 function comment_approved($comment)
 {
+	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
+
     if (is_email($comment->comment_author_email)) {
         $wp_email = $hylsay_email_smtp_options['hylsay_email_smtp_username'];
         $to = trim($comment->comment_author_email);
@@ -248,6 +239,8 @@ add_action('comment_unapproved_to_approved', 'comment_approved');
 
 function comment_notify($comment_id)
 {
+	$hylsay_email_smtp_options = get_option( 'hylsay_email_smtp_option_name' );
+
     $comment = get_comment($comment_id);
     $parent_id = $comment->comment_parent ? $comment->comment_parent : '';
     $spam_confirmed = $comment->comment_approved;
@@ -297,6 +290,3 @@ function comment_notify($comment_id)
     }
 }
 add_action('comment_post', 'comment_notify');
-
-
- ?>
