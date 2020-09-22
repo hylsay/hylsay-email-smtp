@@ -33,7 +33,7 @@ class HylsayEmailSMTP {
 
 		<div class="wrap">
 			<h2>Hylsay-Email-SMTP</h2>
-			<p>纯净版Wordpress邮箱插件，作者：hylsay，官方网址：<a href="https://aoaoao.info" target="_blank">https://aoaoao.info</a></p>
+			<p>Wordpress邮箱插件，评论提醒，回复提醒，纯净版本。作者：hylsay，官方网址：<a href="https://aoaoao.info" target="_blank">https://aoaoao.info</a></p>
 			
 
 			<?php settings_errors(); ?>
