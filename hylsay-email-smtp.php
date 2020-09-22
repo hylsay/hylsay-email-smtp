@@ -24,7 +24,7 @@ class HylsayEmailSMTP {
 			'email-smtp', // menu_slug
 			array( $this, 'hylsay_email_smtp_create_admin_page' ), // function
 			'dashicons-admin-generic', // icon_url
-			3 // position
+			101 // position
 		);
 	}
 
